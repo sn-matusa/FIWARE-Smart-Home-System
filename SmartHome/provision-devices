@@ -1,0 +1,70 @@
+#!/bin/bash
+#
+#  curl commands to reload the data from the previous tutorial
+#
+#
+
+set -e
+
+printf "⏳ Provisioning IoT devices "
+
+
+#
+# Create a service groups for all UltraLight IoT devices
+#
+
+curl -s -o /dev/null -X POST \
+  'http://iot-agent:4041/iot/services' \
+  -H 'Content-Type: application/json' \
+  -H 'fiware-service: openiot' \
+  -H 'fiware-servicepath: /' \
+  -d '{
+ "services": [
+   {
+     "apikey":      "321701236",
+     "cbroker":     "http://orion:1026",
+     "entity_type": "TemperatureSensor",
+     "resource":    "/iot/d",
+     "protocol":    "PDI-IoTA-UltraLight",
+     "transport":   "HTTP",
+     "timezone":    "Europe/Berlin",
+     "attributes": [
+       { "object_id": "t", "name":"temperature", "type": "Integer",
+         "metadata": {"unitCode": {"type": "Property","value": "CEL"}}
+       }
+      ],
+      "static_attributes": [
+        {"name": "description", "type":"Property", "value": "Temperature Sensor"},
+        {"name": "category", "type":"Property", "value": ["sensor"]},
+        {"name": "controlledProperty", "type": "Property", "value": "temperature"},
+        {"name": "supportedProtocol", "type": "Property", "value": ["ul20"]}
+      ]
+   }
+ ]
+}'
+
+####################################################
+#
+# Provision actuators for Farm 001
+#
+
+curl -s -o /dev/null -X POST \
+  'http://iot-agent:4041/iot/devices' \
+  -H 'Content-Type: application/json' \
+  -H 'fiware-service: openiot' \
+  -H 'fiware-servicepath: /' \
+  -d '{
+ "devices": [
+   {
+     "device_id":   "temperature001",
+     "entity_name": "urn:ngsi-ld:Device:temperature001",
+     "entity_type": "TemperatureSensor",
+     "apikey":      "321701236",
+     "static_attributes": [
+         {"name": "controlledAsset", "type": "Relationship","value": "urn:ngsi-ld:Building:farm001"}
+     ]
+   }
+  ]
+}'
+
+echo -e " \033[1;32mdone\033[0m"
