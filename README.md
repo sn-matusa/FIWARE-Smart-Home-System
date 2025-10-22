@@ -3,3 +3,5 @@ Designed and implemented a modular smart home system using FIWARE components, fo
 
 The solution was presented in a peer-reviewed paper at the CSCS25 conference and published in IEEE.
 https://ieeexplore.ieee.org/abstract/document/11181679/
+
+<img width="589" height="606" alt="image" src="https://github.com/user-attachments/assets/e235bce5-69fb-46fb-873c-6d6ed36e8283" />
